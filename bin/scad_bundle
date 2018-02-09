@@ -7,4 +7,5 @@ specs = Bundler.load.specs.reject {|s| s.name == "bundler" }.sort_by(&:name)
 lib_paths = specs.map { |spec| spec.full_gem_path }
 env = {'OPENSCADPATH' => lib_paths.join(':')}
 puts "env: #{env}"
-system( env, ARGV[0] )
+
+exec( env, ARGV.join(' ') )
