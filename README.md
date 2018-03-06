@@ -1,38 +1,87 @@
-# ScadBundler
+# scad_bundler
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/scad_bundler`. To experiment with that code, run `bin/console` for an interactive prompt.
+scad_bundler is a package manager for [OpenSCAD](http://openscad.org).  It's based on [RubyGems](https://rubygems.org) and uses [Bundler](https://bundler.io) under the hood.
 
-TODO: Delete this and the text above, and describe your gem
+scad_bundler is a fully-featured package manager that:
+
+* downloads and installs OpenSCAD libraries needed by your project
+* resolves compatible versions of dependencies of your libraries
+* modifies environment variables to tell OpenSCAD where to find your libraries
+* is capable of downloading libraries directly GitHub, off rubygems.org, from a private repository, or local files on your computer
 
 ## Installation
 
-Add this line to your application's Gemfile:
+You will need to have Ruby and RubyGems installed to use scad_bundler.
 
-```ruby
-gem 'scad_bundler'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Once RubyGems is installed, install `scad_bundler`:
 
     $ gem install scad_bundler
 
 ## Usage
 
-TODO: Write usage instructions here
+Similar to how bundler works, scad_bundler dependencies are defined in a Scadfile and resolved versions are locked in a Scadfile.lock.  To initialize your project and create and empty `Scadfile`
 
-## Development
+    $ scad_bundle init
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Dependencies can be declared inside your `scadfile` using bundler's [full capabilities](https://bundler.io/gemfile.html) for a Gemfile.  FIXME: add a simple example, and go into how version constraints work.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Once your dependencies have been listed, you can install them via:
+
+    $ scad_bundle install
+
+scad_bundler will then work out compatible versions of the libraries and install them on your system.  Then to fire up OpenSCAD:
+
+    $ scad_bundle exec openscad
+
+scad_bundler will then start `openscad` with the `OPENSCADPATH` environment set properly to use all of your libraries.
+
+To upgrade libraries, simple call:
+
+    $ scad_bundle update
+
+## Conventions and Best Practices for creating OpenSCAD Libraries
+
+FIXME: explain how to create a library and what conventions is should follow.
+
+## Motivation
+
+The motivation for scad_bundler is simple - create a first-class package manager for OpenSCAD to help advance the entire OpenSCAD ecosystem.
+
+Having a package manager is an essential feature of modern languages, and OpenSCAD should be no different. A really solid package manager will allow us to build up components and utilities to simplify designs, so that users need not choose between starting at zero and manually wrangling files from Thingiverse.  Having this base of knowledge will also help the OpenSCAD community to better identify and codify best practices for sharing code and designing models.
+
+That package manager needs to support versioning and version constraints, so that packages can evolve over time and ship breaking changes rather than stagnate on the first API to coalesce.
+
+It is my hope that building this knowledge base will also help the community hash out common problems "in userspace" either completely or substantially, so that the scope of changes proposed for OpenSCAD itself can be smaller, more focused, and better tested than many proposals that come up now.
+
+
+## FAQ
+
+#### Why build on RubyGems and bundler?
+
+RubyGems and bundler are a very stable base to build upon, and include very advanced support for specifying compatible library versions and then resolving those dependencies.  Using this foundation is much more expedient than starting from scratch.
+
+#### Why host openscad packages on rubygems.org?
+
+Hosting a package repository is *hard* work and very security sensitive. Using another open source project's repository get us going from day one, and frees us from all of the infrastructure and security headaches hosting our own would entail.  If you don't want to post your package as a gem on rubygems.org, it's perfectly fine to post it on github and direct people to use that.  Long term, it would be ideal to host a separate package repository but there's nothing wrong with starting out like this.
+
+#### Why pass library information via an environment variable?
+
+The initial goal of scad_bundler was to create a package manager that worked without requiring any modifications to OpenSCAD.  Long-term, we would love to integrate more tightly with OpenSCAD, but this absolutely works for now.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/scad_bundler.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lostapathy/scad_bundler.
+
+## TODO
+
+* Better docs on how to package a new library
+* Completely abstract away the fact that this is ruby-based over the long-term.
+* Change the 'gem' declaration in Scadfile to something that isn't a ruby-centric.
+* Decouple us from the 'gemspec' format.  In a perfect world, we'd have our own simplified package format that generated all the extra stuff RubyGems needs but scad_bundler does not.  It would also apply some conventions and best practices to the libraries to make other goals easier to accomplish.
+* Long term, create an alternate package repository from RubyGems.org that only lists OpenSCAD packages and adds functionality more applicable to 3d modeling.
+* Figure out a cleaner way to integrate this with OpenSCAD than just setting an environment variable on OpenSCAD startup.
+* Better define what features we could add to OpenSCAD to better support libraries (i.e., namespacing support).
+* Provide a hook in the library spec to specify a minimum OpenSCAD version to use the library.
 
 ## License
 
