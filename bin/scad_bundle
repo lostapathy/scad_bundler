@@ -1,11 +1,49 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
+
+# Use Scadfile instead of Gemfile
+# FIXME: could this be done in a less hacked way?
+ENV['BUNDLE_GEMFILE'] = 'Scadfile'
+
 require 'bundler'
 require 'shellwords'
 
-specs = Bundler.load.specs.reject {|s| s.name == "bundler" }.sort_by(&:name)
 
-lib_paths = specs.map { |spec| spec.full_gem_path }
-env = {'OPENSCADPATH' => lib_paths.join(':')}
-args = ARGV.map { |x| Shellwords.escape(x) }
-exec( env, args.join(' ') )
+# FIXME: ideally we would delegate this all directly to bundler
+# We do want to wrap bundler and not just use it directly, to limit
+# what aspects of bundler are exposed and keep our options open for
+# different implementations later.
+command = ARGV.shift
+
+if command != 'init' && ! File.exists?('Scadfile')
+  puts 'Could not find Scadfile'
+  exit(1)
+end
+
+case command
+when 'init'
+  # Setup new Scadfile
+  if File.exists?('Scadfile')
+    puts 'Scadfile already exists!'
+    exit(1)
+  end
+
+  File.open('Scadfile', 'w') { |file| file.write("source \"https://rubygems.org\"\n\n# gem 'openscad_util', git: 'https://github.com/lostapathy/openscad-libs'\n") }
+when 'exec'
+  # Run the specified command with OPENSCADPATH set in the environment
+  specs = Bundler.load.specs.reject {|s| s.name == "bundler" }.sort_by(&:name)
+  lib_paths = specs.map { |spec| spec.full_gem_path }
+  env = {'OPENSCADPATH' => lib_paths.join(':')}
+
+  args = ARGV.map { |x| Shellwords.escape(x) }
+  exec( env, args.join(' ')  )
+when 'update'
+  # Update packages
+  exec( { 'BUNDLE_GEMFILE' => 'Scadfile' }, %w[bundle update])
+when 'install'
+  # Install packages
+  exec( { 'BUNDLE_GEMFILE' => 'Scadfile' }, %w[bundle install])
+else
+  puts "Invalid command: #{command}"
+  exit(1)
+end
