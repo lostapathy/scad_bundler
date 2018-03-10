@@ -19,6 +19,9 @@ Once RubyGems is installed, install `scad_bundler`:
 
 ## Usage
 
+See [this repo](https://github.com/lostapathy/scad_bundler_example) for an example project using scad_bundler.
+
+
 Similar to how bundler works, scad_bundler dependencies are defined in a Scadfile and resolved versions are locked in a Scadfile.lock.  To initialize your project and create and empty `Scadfile`
 
     $ scad_bundle init

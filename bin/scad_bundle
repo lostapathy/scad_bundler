@@ -28,7 +28,7 @@ when 'init'
     exit(1)
   end
 
-  File.open('Scadfile', 'w') { |file| file.write("source \"https://rubygems.org\"\n\n# gem 'openscad_util', git: 'https://github.com/lostapathy/openscad-libs'\n") }
+  File.open('Scadfile', 'w') { |file| file.write("source \"https://rubygems.org\"\n\n# gem 'openscad_soften'\n") }
 when 'exec'
   # Run the specified command with OPENSCADPATH set in the environment
   specs = Bundler.load.specs.reject {|s| s.name == "bundler" }.sort_by(&:name)
