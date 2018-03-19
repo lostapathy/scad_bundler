@@ -39,10 +39,10 @@ when 'exec'
   exec( env, args.join(' ')  )
 when 'update'
   # Update packages
-  exec( { 'BUNDLE_GEMFILE' => 'Scadfile' }, %w[bundle update])
+  exec( { 'BUNDLE_GEMFILE' => 'Scadfile' }, 'bundle', 'update')
 when 'install'
   # Install packages
-  exec( { 'BUNDLE_GEMFILE' => 'Scadfile' }, %w[bundle install])
+  exec( { 'BUNDLE_GEMFILE' => 'Scadfile' }, 'bundle', 'install')
 else
   puts "Invalid command: #{command}"
   exit(1)
