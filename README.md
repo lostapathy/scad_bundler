@@ -44,7 +44,7 @@ To upgrade libraries, simple call:
 
 ## Conventions and Best Practices for creating OpenSCAD Libraries
 
-scad_bundler packages are packaged using a subset of features from [RubyGems](https://rubygems.org).  Any documentation related to RubyGems can be used to create these libraries.  Since we only use a subset of the functionality, it's probably easiest to copy the .gemspec file from an existing library like [openscad_soften](https://github.com/lostapathy/openscad_libs/openscad_soften) and modify from there.  TODO: create a simple command like `scad_bundle new` to create a skeleton file.
+scad_bundler packages are packaged using a subset of features from [RubyGems](https://rubygems.org).  Any documentation related to RubyGems can be used to create these libraries.  Since we only use a subset of the functionality, it's probably easiest to copy the .gemspec file from an existing library like [openscad_soften](https://github.com/lostapathy/openscad-libs/tree/master/openscad_soften) and modify from there.  TODO: create a simple command like `scad_bundle new` to create a skeleton file.
 
 Your package do not have to be published to rubygems.org in order to use them with scad_bundler.  scad_bundler can also use packages from GitHub, local filesystem locations, or anywhere else [supported by bundler](http://bundler.io/gemfile.html).
 
