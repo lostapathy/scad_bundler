@@ -1,21 +1,18 @@
 PATH
   remote: .
   specs:
-    scad_bundler (0.1.0)
+    scad_bundler (0.1.2)
+      bundler (~> 1.16)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    minitest (5.11.1)
-    rake (10.5.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bundler (~> 1.16)
-  minitest (~> 5.0)
-  rake (~> 10.0)
   scad_bundler!
 
 BUNDLED WITH
