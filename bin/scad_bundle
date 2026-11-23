@@ -15,7 +15,7 @@ require 'shellwords'
 # different implementations later.
 command = ARGV.shift
 
-if command != 'init' && ! File.exists?('Scadfile')
+if command != 'init' && ! File.exist?('Scadfile')
   puts 'Could not find Scadfile'
   exit(1)
 end
@@ -23,7 +23,7 @@ end
 case command
 when 'init'
   # Setup new Scadfile
-  if File.exists?('Scadfile')
+  if File.exist?('Scadfile')
     puts 'Scadfile already exists!'
     exit(1)
   end
